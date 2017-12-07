@@ -467,9 +467,7 @@ uint8_t bDpState;
     	  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_14,GPIO_PIN_RESET);
     	  HAL_GPIO_WritePin(GPIOB,GPIO_PIN_15,GPIO_PIN_SET);
 
-         if(    ( VPC3_GetDpState( eDpStateApplReady ) )
-             && ( VPC3_GetDpState( eDpStateRun )  )
-           )
+         if(( VPC3_GetDpState( eDpStateApplReady)) && ( VPC3_GetDpState( eDpStateRun )))
          {
             /*---------------------------------------------------------------*/
             /* profibus input ( slave to master )                            */

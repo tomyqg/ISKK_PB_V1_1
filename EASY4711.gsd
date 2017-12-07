@@ -1,0 +1,170 @@
+;
+;********************* GSD-Datei for VPC3 Demo application **************************
+;* ================================================================================ *
+;*                                                                                  *
+;* Vendor:   profichip GmbH                                                         *
+;*           Einsteinstr. 6                                                         *
+;*           91074 Herzogenaurach                                                   *
+;*           Germany                                                                *
+;*           Tel.: ++49-9132-744-200                                                *
+;*           FAX.: ++49-9132-744-204                                                *
+;*                                                                                  *
+;* ================================================================================ *
+;*                                                                                  *
+;* Function:       Demo for PROFICHIP Software                                      *
+;*                                                                                  *
+;*                                                                                  *
+;* Order Number : PA007062                                                          *
+;*                                                                                  *
+;* -------------------------------------------------------------------------------- *
+;* author: P. Fredehorst                                                            *
+;*                                                                                  *
+;*   Tel.: ++49-9132-744-214                                                        *
+;*   FAX.: ++49-9132-744-204                                                        *
+;* -------------------------------------------------------------------------------- *
+;*                                                                                  *
+;* history                                                                          *
+;* ================================================================================ *
+;* 09.09.2005 [V1.04]  Urversion                                                    *
+;*                                                                                  *
+;* -------------------------------------------------------------------------------- *
+;*                                                                                  *
+;************************************************************************************
+
+
+#Profibus_DP
+
+
+;====================================================================================
+;==== Prm-Text-Def-List =============================================================
+;====================================================================================
+
+;=====================================================================================
+;==== Ext-User-Prm-Data-Def-List =====================================================
+;=====================================================================================
+
+
+;=====================================================================================
+;==== General DP Keywords ============================================================
+;=====================================================================================
+
+GSD_Revision = 5
+Vendor_Name = "profichip GmbH"
+Model_Name = "Atrem SoftStart"
+Revision = "1.28"
+Ident_Number = 0x4711
+
+;Protocol ID 0: Profibus DP
+Protocol_Ident = 0
+
+;DP device type 0: DP Slave
+Station_Type = 0
+
+;This device is an FMS/DP mixed device 1: True
+FMS_supp = 0
+
+Hardware_Release = "V1.28"
+Software_Release = "V1.28"
+
+;This value specifies whether a device supports redundant transmission engineering. 1: True
+Redundancy = 0
+
+;Here, the level of the bus connector signal CNTR-P is specified.  0: Not connected, 1: RS485, 2:TTL
+Repeater_Ctrl_Sig = 0
+
+;Here, the meaning of the bus connector signal M24V and P24V is specified. 0: Not connected, 1:Input, 2:Output
+24V_Pins = 0
+
+
+;==============================================================================
+;==== Supported baudrates =====================================================
+;==============================================================================
+
+9.6_supp = 1
+19.2_supp = 1
+45.45_supp = 1
+93.75_supp = 1
+187.5_supp = 1
+500_supp = 1
+1.5M_supp = 1
+3M_supp = 1
+6M_supp = 1
+12M_supp = 1
+
+MaxTsdr_9.6=15
+MaxTsdr_19.2=15
+MaxTsdr_45.45=15
+MaxTsdr_93.75=15
+MaxTsdr_187.5=15
+MaxTsdr_500=15
+MaxTsdr_1.5M=20
+MaxTsdr_3M=35
+MaxTsdr_6M=50
+MaxTsdr_12M=95
+
+
+;==============================================================================
+;==== Slave specific values ===================================================
+;==============================================================================
+
+OrderNumber="PA006300"
+Slave_Family = 3@profichip GmbH@EvaKit_ATMEL89C5132
+Implementation_Type = "VPC3+"
+Info_Text="PROFICHIP: PROFIBUS DPV0 - slave, Project EASY4711"
+Bitmap_Device = "EASY_1N"
+
+Freeze_Mode_supp=1
+
+;The DP device supports the Sync mode. 1:True
+Sync_Mode_supp=1
+
+Fail_Safe=1
+
+Auto_Baud_supp=1
+Set_Slave_Add_supp=1
+
+Min_Slave_Intervall=6
+
+Modular_Station=1
+;
+Max_Module=10
+Max_Input_Len=50
+Max_Output_Len=50
+Max_Data_Len=70
+;
+
+Max_Diag_Data_Len=6
+
+;==============================================================================
+;==== User-Prm-Data ===========================================================
+;==============================================================================
+
+Max_User_Prm_Data_Len = 3
+Ext_User_Prm_Data_Const(0)= 0x00,0x00,0x00
+
+
+;==============================================================================
+;==== Module-Definition-List ==================================================
+;==============================================================================
+
+Module="1. Sterowanie" 0x3C
+1
+EndModule
+
+Module="2. DI" 0x32
+2
+EndModule
+
+Module="3. Status1" 0x1F
+3
+EndModule
+
+Module="4. Status2" 0x1F
+4
+EndModule
+
+
+
+
+
+
