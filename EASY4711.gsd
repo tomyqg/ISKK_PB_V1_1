@@ -11,18 +11,6 @@
 ;*                                                                                  *
 ;* ================================================================================ *
 ;*                                                                                  *
-;* Function:       Demo for PROFICHIP Software                                      *
-;*                                                                                  *
-;*                                                                                  *
-;* Order Number : PA007062                                                          *
-;*                                                                                  *
-;* -------------------------------------------------------------------------------- *
-;* author: P. Fredehorst                                                            *
-;*                                                                                  *
-;*   Tel.: ++49-9132-744-214                                                        *
-;*   FAX.: ++49-9132-744-204                                                        *
-;* -------------------------------------------------------------------------------- *
-;*                                                                                  *
 ;* history                                                                          *
 ;* ================================================================================ *
 ;* 09.09.2005 [V1.04]  Urversion                                                    *
@@ -38,11 +26,50 @@
 ;====================================================================================
 ;==== Prm-Text-Def-List =============================================================
 ;====================================================================================
+PrmText=1
+Text(0)="disable"
+Text(1)="enable"
+EndPrmText
+
+PrmText  = 2
+Text(0)  = "clock up"
+Text(1)  = "clock down"
+EndPrmText
+
+
+
 
 ;=====================================================================================
 ;==== Ext-User-Prm-Data-Def-List =====================================================
 ;=====================================================================================
+ExtUserPrmData=1 "TSS"
+Unsigned16 9000 0-65535
+EndExtUserPrmData
 
+ExtUserPrmData=2 "Alfa"
+Unsigned8 60 0-60
+;Prm_Text_Ref=1
+EndExtUserPrmData
+
+ExtUserPrmData=3 "fuse Umax"
+Unsigned16 700 0-1000
+EndExtUserPrmData
+
+ExtUserPrmData=4 "fuse Umin"
+Unsigned16 200 100-1000
+EndExtUserPrmData
+
+ExtUserPrmData=5 "fuse Iznam"
+Unsigned16 65000 0-65535
+EndExtUserPrmData
+
+ExtUserPrmData=6 "fuse Imax"
+Unsigned16 65000 0-65535
+EndExtUserPrmData
+
+ExtUserPrmData=7 "fuse Iroz"
+Unsigned16 65000 0-65535
+EndExtUserPrmData
 
 ;=====================================================================================
 ;==== General DP Keywords ============================================================
@@ -51,7 +78,7 @@
 GSD_Revision = 5
 Vendor_Name = "profichip GmbH"
 Model_Name = "Atrem SoftStart"
-Revision = "1.28"
+Revision = "1.02"
 Ident_Number = 0x4711
 
 ;Protocol ID 0: Profibus DP
@@ -63,8 +90,8 @@ Station_Type = 0
 ;This device is an FMS/DP mixed device 1: True
 FMS_supp = 0
 
-Hardware_Release = "V1.28"
-Software_Release = "V1.28"
+Hardware_Release = "V1.03"
+Software_Release = "V1.03"
 
 ;This value specifies whether a device supports redundant transmission engineering. 1: True
 Redundancy = 0
@@ -110,7 +137,7 @@ MaxTsdr_12M=95
 OrderNumber="PA006300"
 Slave_Family = 3@profichip GmbH@EvaKit_ATMEL89C5132
 Implementation_Type = "VPC3+"
-Info_Text="PROFICHIP: PROFIBUS DPV0 - slave, Project EASY4711"
+Info_Text="Atrem_Soft_Start"
 Bitmap_Device = "EASY_1N"
 
 Freeze_Mode_supp=1
@@ -126,20 +153,19 @@ Set_Slave_Add_supp=1
 Min_Slave_Intervall=6
 
 Modular_Station=1
-;
-Max_Module=10
+Max_Module=6
 Max_Input_Len=50
 Max_Output_Len=50
 Max_Data_Len=70
-;
 
-Max_Diag_Data_Len=6
+
+Max_Diag_Data_Len=32
 
 ;==============================================================================
 ;==== User-Prm-Data ===========================================================
 ;==============================================================================
 
-Max_User_Prm_Data_Len = 3
+Max_User_Prm_Data_Len = 20
 Ext_User_Prm_Data_Const(0)= 0x00,0x00,0x00
 
 
@@ -149,13 +175,23 @@ Ext_User_Prm_Data_Const(0)= 0x00,0x00,0x00
 
 Module="1. Sterowanie" 0x3C
 1
+Ext_Module_Prm_Data_Len=14
+Ext_User_Prm_Data_Const(0)=0x09
+Ext_User_Prm_Data_Ref(1)=1            
+Ext_User_Prm_Data_Ref(3)=2            
+Ext_User_Prm_Data_Ref(4)=3             
+Ext_User_Prm_Data_Ref(6)=4          
+Ext_User_Prm_Data_Ref(8)=5            
+Ext_User_Prm_Data_Ref(10)=6            
+Ext_User_Prm_Data_Ref(12)=7            
+Info_Text="PROFICHIP: counter module, process-alarm supported"
 EndModule
 
 Module="2. DI" 0x32
 2
 EndModule
 
-Module="3. Status1" 0x1F
+Module="3. Status1" 0x1F 
 3
 EndModule
 
@@ -163,8 +199,9 @@ Module="4. Status2" 0x1F
 4
 EndModule
 
-
-
-
-
-
+SlotDefinition
+Slot(1) = "Slot 1" 1 1
+Slot(2) = "Slot 2" 2 2
+Slot(3) = "Slot 3" 3 3
+Slot(4) = "Slot 4" 4 4
+EndSlotDefinition

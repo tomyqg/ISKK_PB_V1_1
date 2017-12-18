@@ -59,6 +59,7 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+static void MX_NVIC_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -70,10 +71,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	{
 		VPC3_Isr();
 	}
-	if(GPIO_Pin == INT_out_Pin)
+	/*if(GPIO_Pin == INT_out_Pin)
 	{
 		UART1.RECESIEVE_BUFFOR_INDEX=0;
-	}
+	}*/
 }
 /* USER CODE END PFP */
 
@@ -153,6 +154,9 @@ int main(void)
   MX_SPI1_Init();
   MX_USART1_UART_Init();
 
+  /* Initialize interrupts */
+  MX_NVIC_Init();
+
   /* USER CODE BEGIN 2 */
   HAL_UART_Receive_DMA(&huart1,&UART1.RECESIEVE_BUFFOR,1);
   //TestVpc3_01();
@@ -163,18 +167,25 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while(Profibus_Module1.State_Address_ADR_Lo ==0)
-  {
-	  Main_UART();
-	  if(Profibus_Module1.State_Address_ADR_Lo !=0)	  DpAppl_ProfibusInit();
 
-  }
+  //Set PA12(INT_in) on LOW; Master detect interface
+  //HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_RESET);
+  //Wait on PA2(INT_out) on LOW; Master ready to start send
+ // while(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_2)==0);
+
+  SSK_To_ISKK.MyProfibusAddress=7;
+  /*while(SSK_To_ISKK.MyProfibusAddress ==0)
+  {
+	  UART_SSK2ISKK();
+	  if(SSK_To_ISKK.MyProfibusAddress !=0)	  DpAppl_ProfibusInit();
+
+  }*/
   while (1)
   {
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-	  Main_UART();
+	  UART_SSK2ISKK();
 	  DpAppl_ProfibusMain();
 
   }
@@ -232,6 +243,18 @@ void SystemClock_Config(void)
 
   /* SysTick_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+}
+
+/** NVIC Configuration
+*/
+static void MX_NVIC_Init(void)
+{
+  /* EXTI0_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+  /* EXTI1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI1_IRQn);
 }
 
 /* USER CODE BEGIN 4 */

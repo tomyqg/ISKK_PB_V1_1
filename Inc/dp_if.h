@@ -1523,7 +1523,7 @@ typedef struct
 /* 2.5 general defines for prm data                                          */
 /*---------------------------------------------------------------------------*/
 #define PRM_LEN_NORM                      ((uint8_t)0x07)
-#define PRM_LEN_DPV1                      ((uint8_t)0x0A)
+#define PRM_LEN_DPV1                      ((uint8_t)0x18)//((uint8_t)0x0A)
 
 /*---------------------------------------------------------------------------*/
 /* 2.6 literals for structured prm data                                      */

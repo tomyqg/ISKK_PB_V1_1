@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=C:/Programy_Keil/ISKK_PB_V1_1/Inc
+HeaderPath=C:/Users/mikolajp/git1/ISKK_PB_V1_1/Inc
 HeaderFiles=gpio.h;fsmc.h;spi.h;usart.h;stm32f1xx_it.h;stm32f1xx_hal_conf.h;main.h;dma.h;
-SourcePath=C:/Programy_Keil/ISKK_PB_V1_1/Src
+SourcePath=C:/Users/mikolajp/git1/ISKK_PB_V1_1/Src
 SourceFiles=gpio.h;fsmc.h;spi.h;usart.h;stm32f1xx_it.h;stm32f1xx_hal_conf.h;main.h;gpio.c;fsmc.c;spi.c;usart.c;stm32f1xx_it.c;stm32f1xx_hal_msp.c;main.c;dma.h;dma.c;
 
 [PreviousLibFiles]

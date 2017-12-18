@@ -142,116 +142,81 @@ uint8_t             bOutputState;      /**< State of output data. */
       {
          CopyFromVpc3_( &sDpAppl.abDpOutputData[0], pToOutputBuffer, pDpSystem->bOutputDataLength );
 
-			if(Profibus_Module1.Reset!=sDpAppl.abDpOutputData[0]){
+			if(SSK_To_ISKK.Control!=sDpAppl.abDpOutputData[0]){
 				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_SET);
-				Profibus_Module1.Reset=sDpAppl.abDpOutputData[0];
+				SSK_To_ISKK.Control=sDpAppl.abDpOutputData[0];
 				UART1.TRANSMIT_BUFFOR_TAB[0]=k_Frame_1Byte;
 				UART1.TRANSMIT_BUFFOR_TAB[1]=0xFF;
-				UART1.TRANSMIT_BUFFOR_TAB[2]=kReset;
-				UART1.TRANSMIT_BUFFOR_TAB[3]=Profibus_Module1.Reset;
+				UART1.TRANSMIT_BUFFOR_TAB[2]=kControl;
+				UART1.TRANSMIT_BUFFOR_TAB[3]=SSK_To_ISKK.Control;
 				HAL_UART_Transmit(&huart1,UART1.TRANSMIT_BUFFOR_TAB,4,100);
 				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_RESET);
 			}
-			if(Profibus_Module1.Kierunek!=sDpAppl.abDpOutputData[1]){
+			if(sProfibus_Prm.TimeSoftStart!=sProfibus_Prm.SSK_TimeSoftStart){
 				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_SET);
-				Profibus_Module1.Kierunek=sDpAppl.abDpOutputData[1];
-				UART1.TRANSMIT_BUFFOR_TAB[0]=k_Frame_1Byte;
-				UART1.TRANSMIT_BUFFOR_TAB[1]=0xFF;
-				UART1.TRANSMIT_BUFFOR_TAB[2]=kKierunek;
-				UART1.TRANSMIT_BUFFOR_TAB[3]=Profibus_Module1.Kierunek;
-				HAL_UART_Transmit(&huart1,UART1.TRANSMIT_BUFFOR_TAB,4,100);
-				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_RESET);
-			}
-			if(Profibus_Module1.TimeSoftStart!=(((sDpAppl.abDpOutputData[2])<<8)|sDpAppl.abDpOutputData[3])){
-				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_SET);
-				Profibus_Module1.TimeSoftStart=((sDpAppl.abDpOutputData[2])<<8)|sDpAppl.abDpOutputData[3];
 				UART1.TRANSMIT_BUFFOR_TAB[0]=k_Frame_2Byte;
 				UART1.TRANSMIT_BUFFOR_TAB[1]=0xFF;
 				UART1.TRANSMIT_BUFFOR_TAB[2]=kTimeSoftStart;
-				UART1.TRANSMIT_BUFFOR_TAB[3]=(Profibus_Module1.TimeSoftStart>>8);
-				UART1.TRANSMIT_BUFFOR_TAB[4]=(Profibus_Module1.TimeSoftStart & 0xFF);
+				UART1.TRANSMIT_BUFFOR_TAB[3]=(sProfibus_Prm.TimeSoftStart>>8);
+				UART1.TRANSMIT_BUFFOR_TAB[4]=(sProfibus_Prm.TimeSoftStart & 0xFF);
 				HAL_UART_Transmit(&huart1,UART1.TRANSMIT_BUFFOR_TAB,5,100);
 				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_RESET);
 			}
-			if(Profibus_Module1.Alfa!=sDpAppl.abDpOutputData[4]){
+			if(sProfibus_Prm.Alfa!=sProfibus_Prm.SSK_Alfa){
 				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_SET);
-				Profibus_Module1.Alfa=sDpAppl.abDpOutputData[4];
 				UART1.TRANSMIT_BUFFOR_TAB[0]=k_Frame_1Byte;
 				UART1.TRANSMIT_BUFFOR_TAB[1]=0xFF;
 				UART1.TRANSMIT_BUFFOR_TAB[2]=kAlfa;
-				UART1.TRANSMIT_BUFFOR_TAB[3]=Profibus_Module1.Alfa;
+				UART1.TRANSMIT_BUFFOR_TAB[3]=sProfibus_Prm.Alfa;
 				HAL_UART_Transmit(&huart1,UART1.TRANSMIT_BUFFOR_TAB,4,100);
 				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_RESET);
 			}
-			if(Profibus_Module1.Start!=sDpAppl.abDpOutputData[5]){
+
+			if(sProfibus_Prm.fuse_Umax!=sProfibus_Prm.SSK_fuse_Umax){
 				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_SET);
-				Profibus_Module1.Start=sDpAppl.abDpOutputData[5];
-				UART1.TRANSMIT_BUFFOR_TAB[0]=k_Frame_1Byte;
-				UART1.TRANSMIT_BUFFOR_TAB[1]=0xFF;
-				UART1.TRANSMIT_BUFFOR_TAB[2]=kStart;
-				UART1.TRANSMIT_BUFFOR_TAB[3]=Profibus_Module1.Start;
-				HAL_UART_Transmit(&huart1,UART1.TRANSMIT_BUFFOR_TAB,4,100);
-				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_RESET);
-			}
-			if(Profibus_Module1.fuse_Umax!=(((sDpAppl.abDpOutputData[6])<<8)|sDpAppl.abDpOutputData[7])){
-				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_SET);
-				Profibus_Module1.fuse_Umax=((sDpAppl.abDpOutputData[6])<<8)|sDpAppl.abDpOutputData[7];
+
 				UART1.TRANSMIT_BUFFOR_TAB[0]=k_Frame_2Byte;
 				UART1.TRANSMIT_BUFFOR_TAB[1]=0xFF;
 				UART1.TRANSMIT_BUFFOR_TAB[2]=kfuse_Umax;
-				UART1.TRANSMIT_BUFFOR_TAB[3]=(Profibus_Module1.fuse_Umax>>8);
-				UART1.TRANSMIT_BUFFOR_TAB[4]=(Profibus_Module1.fuse_Umax & 0xFF);
+				UART1.TRANSMIT_BUFFOR_TAB[3]=(sProfibus_Prm.fuse_Umax>>8);
+				UART1.TRANSMIT_BUFFOR_TAB[4]=(sProfibus_Prm.fuse_Umax & 0xFF);
 				HAL_UART_Transmit(&huart1,UART1.TRANSMIT_BUFFOR_TAB,5,100);
 				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_RESET);
 			}
-			if(Profibus_Module1.fuse_Umin!=(((sDpAppl.abDpOutputData[8])<<8)|sDpAppl.abDpOutputData[9])){
+			if(sProfibus_Prm.fuse_Umin!=sProfibus_Prm.fuse_Umin){
 				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_SET);
-				Profibus_Module1.fuse_Umin=((sDpAppl.abDpOutputData[8])<<8)|sDpAppl.abDpOutputData[9];
 				UART1.TRANSMIT_BUFFOR_TAB[0]=k_Frame_2Byte;
 				UART1.TRANSMIT_BUFFOR_TAB[1]=0xFF;
 				UART1.TRANSMIT_BUFFOR_TAB[2]=kfuse_Umin;
-				UART1.TRANSMIT_BUFFOR_TAB[3]=(Profibus_Module1.fuse_Umin>>8);
-				UART1.TRANSMIT_BUFFOR_TAB[4]=(Profibus_Module1.fuse_Umin & 0xFF);
+				UART1.TRANSMIT_BUFFOR_TAB[3]=(sProfibus_Prm.fuse_Umin>>8);
+				UART1.TRANSMIT_BUFFOR_TAB[4]=(sProfibus_Prm.fuse_Umin & 0xFF);
 				HAL_UART_Transmit(&huart1,UART1.TRANSMIT_BUFFOR_TAB,5,100);
 				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_RESET);
 			}
-			if(Profibus_Module1.fuse_Iznam!=sDpAppl.abDpOutputData[10]){
+			if(sProfibus_Prm.fuse_Iznam!=sProfibus_Prm.fuse_Iznam){
 				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_SET);
-				Profibus_Module1.fuse_Iznam=sDpAppl.abDpOutputData[10];
 				UART1.TRANSMIT_BUFFOR_TAB[0]=k_Frame_1Byte;
 				UART1.TRANSMIT_BUFFOR_TAB[1]=0xFF;
 				UART1.TRANSMIT_BUFFOR_TAB[2]=kfuse_Iznam;
-				UART1.TRANSMIT_BUFFOR_TAB[3]=Profibus_Module1.fuse_Iznam;
+				UART1.TRANSMIT_BUFFOR_TAB[3]=sProfibus_Prm.fuse_Iznam;
 				HAL_UART_Transmit(&huart1,UART1.TRANSMIT_BUFFOR_TAB,4,100);
 				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_RESET);
 			}
-			if(Profibus_Module1.fuse_Imax!=sDpAppl.abDpOutputData[11]){
+			if(sProfibus_Prm.fuse_Imax!=sProfibus_Prm.fuse_Imax){
 				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_SET);
-				Profibus_Module1.fuse_Imax=sDpAppl.abDpOutputData[11];
 				UART1.TRANSMIT_BUFFOR_TAB[0]=k_Frame_1Byte;
 				UART1.TRANSMIT_BUFFOR_TAB[1]=0xFF;
 				UART1.TRANSMIT_BUFFOR_TAB[2]=kfuse_Imax;
-				UART1.TRANSMIT_BUFFOR_TAB[3]=Profibus_Module1.fuse_Imax;
+				UART1.TRANSMIT_BUFFOR_TAB[3]=sProfibus_Prm.fuse_Imax;
 				HAL_UART_Transmit(&huart1,UART1.TRANSMIT_BUFFOR_TAB,4,100);
 				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_RESET);
 			}
-			if(Profibus_Module1.fuse_Iroz!=sDpAppl.abDpOutputData[12]){
+			if(sProfibus_Prm.fuse_Iroz!=sProfibus_Prm.fuse_Iroz){
 				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_SET);
-				Profibus_Module1.fuse_Iroz=sDpAppl.abDpOutputData[12];
 				UART1.TRANSMIT_BUFFOR_TAB[0]=k_Frame_1Byte;
 				UART1.TRANSMIT_BUFFOR_TAB[1]=0xFF;
 				UART1.TRANSMIT_BUFFOR_TAB[2]=kfuse_Iroz;
-				UART1.TRANSMIT_BUFFOR_TAB[3]=Profibus_Module1.fuse_Iroz;
-				HAL_UART_Transmit(&huart1,UART1.TRANSMIT_BUFFOR_TAB,4,100);
-				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_RESET);
-			}
-			if(Profibus_Module1.State_Output!=sDpAppl.abDpOutputData[15]){
-				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_SET);
-				Profibus_Module1.State_Output=sDpAppl.abDpOutputData[15];
-				UART1.TRANSMIT_BUFFOR_TAB[0]=k_Frame_1Byte;
-				UART1.TRANSMIT_BUFFOR_TAB[1]=0xFF;
-				UART1.TRANSMIT_BUFFOR_TAB[2]=kfuse_Iroz;
-				UART1.TRANSMIT_BUFFOR_TAB[3]=Profibus_Module1.State_Output;
+				UART1.TRANSMIT_BUFFOR_TAB[3]=sProfibus_Prm.fuse_Iroz;
 				HAL_UART_Transmit(&huart1,UART1.TRANSMIT_BUFFOR_TAB,4,100);
 				HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_RESET);
 			}
@@ -271,47 +236,74 @@ uint8_t             bOutputState;      /**< State of output data. */
 static void DpAppl_ReadInputData( void )
 {
    /** @todo Read cyclically the input module. */
-	sDpAppl.abDpInputData[0]=Profibus_Module1.Reset;
-	sDpAppl.abDpInputData[1]=Profibus_Module1.Kierunek;
-	sDpAppl.abDpInputData[2]=(Profibus_Module1.TimeSoftStart>>8);
-	sDpAppl.abDpInputData[3]=(Profibus_Module1.TimeSoftStart & 0xFF);
-	sDpAppl.abDpInputData[4]=Profibus_Module1.Alfa;
-	sDpAppl.abDpInputData[5]=Profibus_Module1.Start;
-	sDpAppl.abDpInputData[6]=(Profibus_Module1.fuse_Umax>>8);
-	sDpAppl.abDpInputData[7]=(Profibus_Module1.fuse_Umax & 0xFF);
-	sDpAppl.abDpInputData[8]=(Profibus_Module1.fuse_Umin>>8);
-	sDpAppl.abDpInputData[9]=(Profibus_Module1.fuse_Umin & 0xFF);
-	sDpAppl.abDpInputData[10]=Profibus_Module1.fuse_Iznam;
-	sDpAppl.abDpInputData[11]=Profibus_Module1.fuse_Imax;
-	sDpAppl.abDpInputData[12]=Profibus_Module1.fuse_Iroz;
-	sDpAppl.abDpInputData[13]=Profibus_Module1.State_Input_Hi;
-	sDpAppl.abDpInputData[14]=Profibus_Module1.State_Input_Lo;
-	sDpAppl.abDpInputData[15]=Profibus_Module1.State_Output;
-	sDpAppl.abDpInputData[16]=Profibus_Module1.Temperatura_Hi;
-	sDpAppl.abDpInputData[17]=Profibus_Module1.Temperatura_Lo;
-	sDpAppl.abDpInputData[18]=Profibus_Module1.AIN0_Hi;
-	sDpAppl.abDpInputData[19]=Profibus_Module1.AIN0_Lo;
-	sDpAppl.abDpInputData[20]=Profibus_Module1.AIN1_Hi;
-	sDpAppl.abDpInputData[21]=Profibus_Module1.AIN1_Lo;
-	sDpAppl.abDpInputData[22]=Profibus_Module1.AIN2_Hi;
-	sDpAppl.abDpInputData[23]=Profibus_Module1.AIN2_Lo;
-	sDpAppl.abDpInputData[24]=Profibus_Module1.AIN3_Hi;
-	sDpAppl.abDpInputData[25]=Profibus_Module1.AIN3_Lo;
-	sDpAppl.abDpInputData[26]=Profibus_Module1.IL1_Hi;
-	sDpAppl.abDpInputData[27]=Profibus_Module1.IL1_Lo;
-	sDpAppl.abDpInputData[28]=Profibus_Module1.IL2_Hi;
-	sDpAppl.abDpInputData[29]=Profibus_Module1.IL2_Lo;
-	sDpAppl.abDpInputData[30]=Profibus_Module1.IL3_Hi;
-	sDpAppl.abDpInputData[31]=Profibus_Module1.IL3_Lo;
-	sDpAppl.abDpInputData[32]=Profibus_Module1.UL1_Hi;
-	sDpAppl.abDpInputData[33]=Profibus_Module1.UL1_Lo;
-	sDpAppl.abDpInputData[34]=Profibus_Module1.UL2_Hi;
-	sDpAppl.abDpInputData[35]=Profibus_Module1.UL2_Lo;
-	sDpAppl.abDpInputData[36]=Profibus_Module1.UL3_Hi;
-	sDpAppl.abDpInputData[37]=Profibus_Module1.UL3_Lo;
-	sDpAppl.abDpInputData[38]=Profibus_Module1.Flaga_Hi;
-	sDpAppl.abDpInputData[39]=Profibus_Module1.Flaga_Lo;
+	//sDpAppl.abDpInputData[0]=Profibus_Module1.Reset;
+	//sDpAppl.abDpInputData[1]=Profibus_Module1.Kierunek;
+	//sDpAppl.abDpInputData[2]=(Profibus_Module1.TimeSoftStart>>8);
+	//sDpAppl.abDpInputData[3]=(Profibus_Module1.TimeSoftStart & 0xFF);
+	//sDpAppl.abDpInputData[4]=Profibus_Module1.Alfa;
+	//sDpAppl.abDpInputData[5]=Profibus_Module1.Start;
+	//sDpAppl.abDpInputData[6]=(Profibus_Module1.fuse_Umax>>8);
+	//sDpAppl.abDpInputData[7]=(Profibus_Module1.fuse_Umax & 0xFF);
+	//sDpAppl.abDpInputData[8]=(Profibus_Module1.fuse_Umin>>8);
+	//sDpAppl.abDpInputData[9]=(Profibus_Module1.fuse_Umin & 0xFF);
+	//sDpAppl.abDpInputData[10]=Profibus_Module1.fuse_Iznam;
+	//sDpAppl.abDpInputData[11]=Profibus_Module1.fuse_Imax;
+	//sDpAppl.abDpInputData[12]=Profibus_Module1.fuse_Iroz;
+	//sDpAppl.abDpInputData[13]=Profibus_Module1.State_Input_Hi;
+	//sDpAppl.abDpInputData[14]=Profibus_Module1.State_Input_Lo;
+	//sDpAppl.abDpInputData[15]=Profibus_Module1.State_Output;
+	//sDpAppl.abDpInputData[16]=Profibus_Module1.Temperatura_Hi;
+	//sDpAppl.abDpInputData[17]=Profibus_Module1.Temperatura_Lo;
+	//sDpAppl.abDpInputData[18]=Profibus_Module1.AIN0_Hi;
+	//sDpAppl.abDpInputData[19]=Profibus_Module1.AIN0_Lo;
+	//sDpAppl.abDpInputData[20]=Profibus_Module1.AIN1_Hi;
+	//sDpAppl.abDpInputData[21]=Profibus_Module1.AIN1_Lo;
+	//sDpAppl.abDpInputData[22]=Profibus_Module1.AIN2_Hi;
+	//sDpAppl.abDpInputData[23]=Profibus_Module1.AIN2_Lo;
+	//sDpAppl.abDpInputData[24]=Profibus_Module1.AIN3_Hi;
+	//sDpAppl.abDpInputData[25]=Profibus_Module1.AIN3_Lo;
+	//sDpAppl.abDpInputData[26]=Profibus_Module1.IL1_Hi;
+	//sDpAppl.abDpInputData[27]=Profibus_Module1.IL1_Lo;
+	//sDpAppl.abDpInputData[28]=Profibus_Module1.IL2_Hi;
+	//sDpAppl.abDpInputData[29]=Profibus_Module1.IL2_Lo;
+	//sDpAppl.abDpInputData[30]=Profibus_Module1.IL3_Hi;
+	//sDpAppl.abDpInputData[31]=Profibus_Module1.IL3_Lo;
+	//sDpAppl.abDpInputData[32]=Profibus_Module1.UL1_Hi;
+	//sDpAppl.abDpInputData[33]=Profibus_Module1.UL1_Lo;
+	//sDpAppl.abDpInputData[34]=Profibus_Module1.UL2_Hi;
+	//sDpAppl.abDpInputData[35]=Profibus_Module1.UL2_Lo;
+	//sDpAppl.abDpInputData[36]=Profibus_Module1.UL3_Hi;
+	//sDpAppl.abDpInputData[37]=Profibus_Module1.UL3_Lo;
+	//sDpAppl.abDpInputData[38]=Profibus_Module1.Flaga_Hi;
+	//sDpAppl.abDpInputData[39]=Profibus_Module1.Flaga_Lo;
 
+	//Dane do PLC
+	sDpAppl.abDpInputData[0] =SSK_To_ISKK.State_Input_Hi;
+	sDpAppl.abDpInputData[1] =SSK_To_ISKK.State_Input_Lo;
+	sDpAppl.abDpInputData[2] =SSK_To_ISKK.Flaga_Hi;
+	sDpAppl.abDpInputData[3] =SSK_To_ISKK.Flaga_Lo;
+	sDpAppl.abDpInputData[4] =SSK_To_ISKK.AIN0_Hi;
+	sDpAppl.abDpInputData[5] =SSK_To_ISKK.AIN0_Lo;
+	sDpAppl.abDpInputData[6] =SSK_To_ISKK.AIN1_Hi;
+	sDpAppl.abDpInputData[7] =SSK_To_ISKK.AIN1_Lo;
+	sDpAppl.abDpInputData[8] =SSK_To_ISKK.AIN2_Hi;
+	sDpAppl.abDpInputData[9]=SSK_To_ISKK.AIN2_Lo;
+	sDpAppl.abDpInputData[10]=SSK_To_ISKK.AIN3_Hi;
+	sDpAppl.abDpInputData[11]=SSK_To_ISKK.AIN3_Lo;
+	sDpAppl.abDpInputData[12]=SSK_To_ISKK.IL1_Hi;
+	sDpAppl.abDpInputData[13]=SSK_To_ISKK.IL1_Lo;
+	sDpAppl.abDpInputData[14]=SSK_To_ISKK.IL2_Hi;
+	sDpAppl.abDpInputData[15]=SSK_To_ISKK.IL2_Lo;
+	sDpAppl.abDpInputData[16]=SSK_To_ISKK.IL3_Hi;
+	sDpAppl.abDpInputData[17]=SSK_To_ISKK.IL3_Lo;
+	sDpAppl.abDpInputData[18]=SSK_To_ISKK.UL1_Hi;
+	sDpAppl.abDpInputData[19]=SSK_To_ISKK.UL1_Lo;
+	sDpAppl.abDpInputData[20]=SSK_To_ISKK.UL2_Hi;
+	sDpAppl.abDpInputData[21]=SSK_To_ISKK.UL2_Lo;
+	sDpAppl.abDpInputData[22]=SSK_To_ISKK.UL3_Hi;
+	sDpAppl.abDpInputData[23]=SSK_To_ISKK.UL3_Lo;
+	sDpAppl.abDpInputData[24]=SSK_To_ISKK.Temperatura_Hi;
+	sDpAppl.abDpInputData[25]=SSK_To_ISKK.Temperatura_Lo;
 
    VPC3_InputDataUpdate( &sDpAppl.abDpInputData[0] );
 }//static void DpAppl_ReadInputData( void )
@@ -386,7 +378,7 @@ DP_ERROR_CODE       bError;
 
    if( DP_OK == bError )
    {
-         bError = VPC3_Initialization( Profibus_Module1.State_Address_ADR_Lo/*DP_ADDR*/, IDENT_NR, (psCFG)&sDpAppl.sCfgData );                  // address of slave
+         bError = VPC3_Initialization( SSK_To_ISKK.MyProfibusAddress/*DP_ADDR*/, IDENT_NR, (psCFG)&sDpAppl.sCfgData );                  // address of slave
 
       if( DP_OK == bError )
       {

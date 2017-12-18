@@ -20,10 +20,8 @@
 /*                                                                           */
 /*****************************************************************************/
 
-
 /*****************************************************************************/
 /* contents:
-
 
 */
 /*****************************************************************************/
@@ -38,8 +36,10 @@
  */
 
 /* include hierarchy */
-
+#include <string.h>
 #include "platform.h"
+#include "DpAppl.h"
+#include "ISKK.h"
 
 /*---------------------------------------------------------------------------*/
 /* function prototypes                                                       */
@@ -80,14 +80,18 @@ DP_ERROR_CODE eRetValue;
 
    eRetValue = DP_OK;
 
-   //DPV0-Mode
-   if(    (( bDpv1Status1 & 0xF8 ) != 0x00 )
-       || (( bDpv1Status2 & 0xFF ) != 0x00 )
-       || (( bDpv1Status3 & 0xFF ) != 0x00 )
-     )
+   if( pDpSystem->eDPV1 == DPV1_MODE )
    {
       eRetValue = DP_PRM_DPV1_STATUS;
-   }//if(    (( bDpv1Status1 & 0xF8 ) != 0x00 ) ...
+   }//if( pDpSystem->eDPV1 == DPV1_MODE )
+   else
+   {
+      //DPV0-Mode
+      if(    (( bDpv1Status1 & 0xF8 ) != 0x00 )|| (( bDpv1Status2 & 0xFF ) != 0x00 ) || (( bDpv1Status3 & 0xFF ) != 0x00 ))
+      {
+         eRetValue = DP_PRM_DPV1_STATUS;
+      }
+   }//else of if( pDpSystem->eDPV1 == DPV1_MODE )
 
    return eRetValue;
 }//static DP_ERROR_CODE DpPrm_ChkDpv1StatusBytes( uint8_t bDpv1Status1, uint8_t bDpv1Status2, uint8_t bDpv1Status3 )
@@ -119,7 +123,19 @@ DP_ERROR_CODE     eRetValue;
    {
       psToPrmData = ( MEM_STRUC_PRM_PTR )pbPrmData;
 
+      //DPV1 Statusbyte 1
+      pDpSystem->eDPV1 = ( psToPrmData->bDpv1Status1 & DPV1_STATUS_1_DPV1_ENABLE )? DPV1_MODE : DPV0_MODE; //<----
+
       eRetValue = DpPrm_ChkDpv1StatusBytes( psToPrmData->bDpv1Status1, psToPrmData->bDpv1Status2, psToPrmData->bDpv1Status3 );
+      //My_Code
+      sProfibus_Prm.TimeSoftStart = ((pDpSystem->abPrmCfgSsaHelpBuffer[11])<<8)| pDpSystem->abPrmCfgSsaHelpBuffer[12]; //TSS
+      sProfibus_Prm.Alfa          = pDpSystem->abPrmCfgSsaHelpBuffer[13];//Alfa
+      sProfibus_Prm.fuse_Umax     = ((pDpSystem->abPrmCfgSsaHelpBuffer[14])<<8)|  pDpSystem->abPrmCfgSsaHelpBuffer[15];//Umax
+      sProfibus_Prm.fuse_Umin     = ((pDpSystem->abPrmCfgSsaHelpBuffer[16])<<8)|  pDpSystem->abPrmCfgSsaHelpBuffer[17];//Umin
+      sProfibus_Prm.fuse_Iznam    = ((pDpSystem->abPrmCfgSsaHelpBuffer[18])<<8)|  pDpSystem->abPrmCfgSsaHelpBuffer[19];//Izna
+      sProfibus_Prm.fuse_Imax     = ((pDpSystem->abPrmCfgSsaHelpBuffer[20])<<8)|  pDpSystem->abPrmCfgSsaHelpBuffer[21];//Imax
+      sProfibus_Prm.fuse_Iroz     = ((pDpSystem->abPrmCfgSsaHelpBuffer[22])<<8)|  pDpSystem->abPrmCfgSsaHelpBuffer[23];//Iroz
+      //End_My_Code
    }//if( bPrmLength == PRM_LEN_DPV1 )
    else
    {

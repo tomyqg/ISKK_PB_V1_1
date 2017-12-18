@@ -56,15 +56,14 @@
 #define PB_SYNC_EXTI_IRQn EXTI1_IRQn
 #define INT_out_Pin GPIO_PIN_2
 #define INT_out_GPIO_Port GPIOA
-#define INT_out_EXTI_IRQn EXTI2_IRQn
 #define SPI1_CS_Pin GPIO_PIN_4
 #define SPI1_CS_GPIO_Port GPIOA
 #define LED_G_Pin GPIO_PIN_14
 #define LED_G_GPIO_Port GPIOB
 #define LED_B_Pin GPIO_PIN_15
 #define LED_B_GPIO_Port GPIOB
-#define INT_IN_Pin GPIO_PIN_12
-#define INT_IN_GPIO_Port GPIOA
+#define INT_in_Pin GPIO_PIN_12
+#define INT_in_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 

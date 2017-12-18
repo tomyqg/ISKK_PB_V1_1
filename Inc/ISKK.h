@@ -10,49 +10,35 @@
 #ifndef ISKK_H_
 #define ISKK_H_
 
-#define kReset 		   0x10
-#define kKierunek 	   0x11
-#define kTimeSoftStart 0x12
-#define kAlfa 		   0x13
-#define kStart 		   0x14
-#define kfuse_Umax 	   0x15
-#define kfuse_Umin 	   0x16
-#define kfuse_Iznam    0x17
-#define kfuse_Imax 	   0x18
-#define kfuse_Iroz 	   0x19
-#define kState_Input   0x20
-#define kState_Output  0x21
-#define kILx		   0x22
-#define kULx           0x23
-#define kTemperatura   0x24
-#define kAIN0          0x25
-#define kAIN1          0x26
-#define kAIN2          0x27
-#define kAIN3          0x28
-#define kFlaga		   0x29
-#define kAddress_ADR   0x30
+#define kControl	   10
+#define kState_Input   11
+#define kFlaga		   12
+#define kAINx          13
+#define kILx		   14
+#define kULx           15
+#define kTemperatura   16
+#define kAddress_ADR   17
+#define kTimeSoftStart 18
+#define kAlfa 	       19
+#define kfuse_Umax 	   20
+#define kfuse_Umin 	   21
+#define kfuse_Iznam    22
+#define kfuse_Imax 	   23
+#define kfuse_Iroz 	   24
+
+
+
 
 #define k_Frame_1Byte  0x04
 #define k_Frame_2Byte  0x05
 #define k_Frame_3Byte  0x06
 #define k_Frame_4Byte  0x07
 
-struct Profibus{
-	uint8_t State_Address_ADR_Hi;
-	uint8_t State_Address_ADR_Lo;
-	uint8_t Reset;
-	uint8_t Kierunek;
-	uint16_t TimeSoftStart;
-	uint8_t Alfa;
-	uint8_t Start;
-	uint16_t fuse_Umax;
-	uint16_t fuse_Umin;
-	uint8_t fuse_Iznam;
-	uint8_t fuse_Imax;
-	uint8_t fuse_Iroz;
+struct Profibus_Data{
+	uint8_t MyProfibusAddress;
+	uint8_t Control;
 	uint8_t State_Input_Hi; //Wejscia
 	uint8_t State_Input_Lo; //Wejscia
-	uint8_t State_Output; //Wyjscia
 	uint8_t IL1_Hi;
 	uint8_t IL1_Lo;
 	uint8_t IL2_Hi;
@@ -78,17 +64,39 @@ struct Profibus{
 	uint8_t Flaga_Hi;
 	uint8_t Flaga_Lo;
 
-}Profibus_Module1;
+}SSK_To_ISKK;
+
+struct Profibus_Prm
+{
+	/*
+	 *  Struktura przechowuj¹ca parametry Profibus
+	 */
+	uint16_t TimeSoftStart;
+	uint8_t Alfa;
+	uint16_t fuse_Umax;
+	uint16_t fuse_Umin;
+	uint8_t fuse_Iznam;
+	uint8_t fuse_Imax;
+	uint8_t fuse_Iroz;
+
+	uint16_t SSK_TimeSoftStart;
+	uint8_t SSK_Alfa;
+	uint16_t SSK_fuse_Umax;
+	uint16_t SSK_fuse_Umin;
+	uint8_t SSK_fuse_Iznam;
+	uint8_t SSK_fuse_Imax;
+	uint8_t SSK_fuse_Iroz;
+} sProfibus_Prm;
 
 struct UART{
 	bool    Flaga_DMA_Rx;
 	uint8_t RECESIEVE_BUFFOR;
 	uint8_t RECESIEVE_BUFFOR_INDEX;
-	uint8_t RECESIEVE_BUFFOR_TAB[50];
+	uint8_t RECESIEVE_BUFFOR_TAB[60];
 	uint8_t TRANSMIT_BUFFOR_TAB[20];
 }UART1;
 
-void Main_UART(void);
+void UART_SSK2ISKK(void);
 void ISKK_Init(void);
 
 #endif /* ISKK_H_ */

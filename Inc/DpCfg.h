@@ -114,7 +114,7 @@
    Use following values:
    - 7 to 244
 */
-#define PRM_BUFSIZE                 ((uint8_t)0xF0)//0A     // Length of the Parameter Buffer                                 7..244
+#define PRM_BUFSIZE                 ((uint8_t)0xF3)//0A     // Length of the Parameter Buffer                                 7..244
 
 /*!
    \def DIAG_BUFSIZE
