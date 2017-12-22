@@ -54,8 +54,9 @@
 #define PB_SYNC_Pin GPIO_PIN_1
 #define PB_SYNC_GPIO_Port GPIOA
 #define PB_SYNC_EXTI_IRQn EXTI1_IRQn
-#define INT_out_Pin GPIO_PIN_2
-#define INT_out_GPIO_Port GPIOA
+#define INT_OUT_Pin GPIO_PIN_2
+#define INT_OUT_GPIO_Port GPIOA
+#define INT_OUT_EXTI_IRQn EXTI2_IRQn
 #define SPI1_CS_Pin GPIO_PIN_4
 #define SPI1_CS_GPIO_Port GPIOA
 #define LED_G_Pin GPIO_PIN_14

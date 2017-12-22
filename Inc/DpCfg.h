@@ -263,7 +263,7 @@
       - 0 - Error counter is not supported.
       - 1 - Error counter is supported
 */
-#define INIT_VPC3_MODE_REG_H        ((uint8_t)0xA5)//25
+#define INIT_VPC3_MODE_REG_H        ((uint8_t)0xA5)//0xA5/25
 
 
 /*-----------------------------------------------------------------------*/

@@ -25,6 +25,7 @@
 #define kfuse_Iznam    22
 #define kfuse_Imax 	   23
 #define kfuse_Iroz 	   24
+#define kVersion       25
 
 
 
@@ -95,6 +96,21 @@ struct UART{
 	uint8_t RECESIEVE_BUFFOR_TAB[60];
 	uint8_t TRANSMIT_BUFFOR_TAB[20];
 }UART1;
+
+typedef enum eISKK_INT_IN{ISKK_INT_IN_Ready=0,ISKK_INT_IN_Not_Ready=1}tISKK_INT_IN;
+typedef enum eISKK_INT_OUT{ISKK_INT_OUT_Ready=0,ISKK_INT_OUT_Not_Ready=1}tISKK_INT_OUT;
+typedef struct sISKK_Interface{
+	tISKK_INT_IN ISKK_INT_IN;
+	tISKK_INT_OUT ISKK_INT_OUT;
+	bool Profibus_Pool;
+}tISKK_Interface;
+
+struct sMain_ISKK
+{
+	uint8_t Old_W_Config;
+	tISKK_Interface ISKK_Interface;
+
+}Main_ISKK;
 
 void UART_SSK2ISKK(void);
 void ISKK_Init(void);

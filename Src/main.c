@@ -71,10 +71,11 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	{
 		VPC3_Isr();
 	}
-	/*if(GPIO_Pin == INT_out_Pin)
+	if(GPIO_Pin == INT_OUT_Pin)
 	{
-		UART1.RECESIEVE_BUFFOR_INDEX=0;
-	}*/
+		  HAL_UART_Receive_DMA(&huart1,UART1.RECESIEVE_BUFFOR_TAB,58);
+		//UART1.RECESIEVE_BUFFOR_INDEX=0;
+	}
 }
 /* USER CODE END PFP */
 
@@ -158,7 +159,7 @@ int main(void)
   MX_NVIC_Init();
 
   /* USER CODE BEGIN 2 */
-  HAL_UART_Receive_DMA(&huart1,&UART1.RECESIEVE_BUFFOR,1);
+  //HAL_UART_Receive_DMA(&huart1,&UART1.RECESIEVE_BUFFOR,1);
   //TestVpc3_01();
   DpAppl_SetResetVPC3Channel1();
   ISKK_Init();
@@ -169,17 +170,23 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 
   //Set PA12(INT_in) on LOW; Master detect interface
-  //HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_RESET);
+  Main_ISKK.ISKK_Interface.ISKK_INT_IN=ISKK_INT_IN_Ready;
   //Wait on PA2(INT_out) on LOW; Master ready to start send
- // while(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_2)==0);
+  //while(HAL_GPIO_ReadPin(INT_out_GPIO_Port,INT_out_Pin)==1);
+  //sMain_ISKK.pSISKK_Interface.pISKK_INT_OUT=ISKK_INT_OUT_Ready;
 
-  SSK_To_ISKK.MyProfibusAddress=7;
-  /*while(SSK_To_ISKK.MyProfibusAddress ==0)
+  //SSK_To_ISKK.MyProfibusAddress=7;
+  //DpAppl_ProfibusInit();
+
+  while(SSK_To_ISKK.MyProfibusAddress ==0)
   {
 	  UART_SSK2ISKK();
 	  if(SSK_To_ISKK.MyProfibusAddress !=0)	  DpAppl_ProfibusInit();
 
-  }*/
+  }
+
+
   while (1)
   {
   /* USER CODE END WHILE */

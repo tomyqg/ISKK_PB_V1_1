@@ -11,12 +11,22 @@
 
 void ISKK_Init(void)
 {
+	Main_ISKK.Old_W_Config=0;
+	Main_ISKK.ISKK_Interface.Profibus_Pool=false;
 	//kiedy nadaje ustaw stan wysoki
 	HAL_GPIO_WritePin(GPIOA,GPIO_PIN_12,GPIO_PIN_RESET);//INT_IN
 
 	UART1.Flaga_DMA_Rx=false;
 	UART1.RECESIEVE_BUFFOR=0;
 	UART1.RECESIEVE_BUFFOR_INDEX=0;
+
+	//LED
+	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_14,GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_15,GPIO_PIN_SET);
+
+	//Interface
+	Main_ISKK.ISKK_Interface.ISKK_INT_IN=ISKK_INT_IN_Not_Ready;
+	Main_ISKK.ISKK_Interface.ISKK_INT_OUT=ISKK_INT_OUT_Not_Ready;
 
 	//Profibus_Prm
 	sProfibus_Prm.Alfa          = 60;
@@ -47,12 +57,12 @@ void ISKK_Init(void)
 
 void UART_SSK2ISKK(void) { //Od SSK do ISSK
 	if (UART1.Flaga_DMA_Rx == true) { //Jezeli odebrano znak
-		UART1.RECESIEVE_BUFFOR_TAB[UART1.RECESIEVE_BUFFOR_INDEX] = UART1.RECESIEVE_BUFFOR;
-		UART1.RECESIEVE_BUFFOR_INDEX++;
+		//UART1.RECESIEVE_BUFFOR_TAB[UART1.RECESIEVE_BUFFOR_INDEX] = UART1.RECESIEVE_BUFFOR;
+		//UART1.RECESIEVE_BUFFOR_INDEX++;
 		UART1.Flaga_DMA_Rx = false;
-		//if(UART1.RECESIEVE_BUFFOR_INDEX == 1 && UART1.RECESIEVE_BUFFOR_TAB[1]!=0xFF) UART1.RECESIEVE_BUFFOR_INDEX=0;
 
-		if ((UART1.RECESIEVE_BUFFOR_TAB[0] == UART1.RECESIEVE_BUFFOR_INDEX) && UART1.RECESIEVE_BUFFOR_TAB[1]==0xFF) { //Jezeli odebrano cala ramke
+	if ((UART1.RECESIEVE_BUFFOR_TAB[0]==58) && (UART1.RECESIEVE_BUFFOR_TAB[1])==0xFF){ //Jezeli odebrano cala ramke
+
 			if (UART1.RECESIEVE_BUFFOR_TAB[1] == 0xFF) { //Zapis
 
 				if (UART1.RECESIEVE_BUFFOR_TAB[2] == kControl) {
@@ -121,8 +131,6 @@ void UART_SSK2ISKK(void) { //Od SSK do ISSK
 				if(UART1.RECESIEVE_BUFFOR_TAB[55] == kfuse_Iroz){
 					sProfibus_Prm.SSK_fuse_Iroz     = ((UART1.RECESIEVE_BUFFOR_TAB[56])<<8)|UART1.RECESIEVE_BUFFOR_TAB[57];
 				}
-			}else{
-				UART1.RECESIEVE_BUFFOR_INDEX=0;
 			}
 		}
 	}
